@@ -16,27 +16,32 @@ Download [MS COCO](https://cocodataset.org/#download)
 
 put val2014, annotations_trainval dir to current directory.
 
+```bash
 python ./annotations_trainval/file_to_caption.py 
-
+```
 
 
 
 
 ### Sample Images
+```bash
 python sample_images.py
 
 python sample_stitched_images.py  
-
+```
 
 ## Sample Needles
+```bash
 python sample_single_needles.py
 
 python sample_multiple_needles.py
-
+```
 ## Test 
+```bash
 python needle.py
-
+```
 ## Test in Different Settings
+```bash
 export BEGIN=0
 
 export N_SEQ=10
@@ -44,8 +49,9 @@ export N_SEQ=10
 export MODEL_PROVIDER='Gemini'
 
 bash test.sh
-
+```
 ## Evaluate the Results
+```bash
 export BEGIN=0
 
 export N_SEQ=10
@@ -53,3 +59,4 @@ export N_SEQ=10
 python evaluate.py
 
 python evaluate_multi.py
+```
