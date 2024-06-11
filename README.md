@@ -4,7 +4,9 @@
 
 ## Install Environment
 
+```bash
 conda env create -f context.yml
+```
 
 ## Construct Dataset
 
