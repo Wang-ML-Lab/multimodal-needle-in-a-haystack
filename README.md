@@ -1,4 +1,4 @@
-# Multimodal_Needle_In_A_Haystack
+# Multimodal-Needle-In-A-Haystack
 
 [MMNeedle Dataset Link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)
 
@@ -40,11 +40,13 @@ python sample_multiple_needles.py
 ```bash
 python needle.py
 ```
-## Test in Different Settings
+## Test a Specific Model in Different Settings
 ```bash
 export BEGIN=0
 
-export N_SEQ=10
+export N_SEQ=1000
+
+export N_NEEDLES=1 
 
 export MODEL_PROVIDER='Gemini'
 
@@ -54,7 +56,7 @@ bash test.sh
 ```bash
 export BEGIN=0
 
-export N_SEQ=10
+export N_SEQ=1000
 
 python evaluate.py
 
