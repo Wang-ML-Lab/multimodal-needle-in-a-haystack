@@ -12,8 +12,6 @@ def main():
     for response_path in response_paths:
         if 'needles' in response_path:
             continue
-        if 'claude-3-opus-20240229' not in response_path:
-            continue
         
         
         print(response_path)
@@ -255,12 +253,12 @@ if __name__ == "__main__":
        'gemini-1.0-pro-vision-latest': 'Gemini Pro 1.0',
        'gemini-1.5-pro-latest': 'Gemini Pro 1.5',
        'fuyu-8b': 'Fuyu-8B',
-       'llava-llama-3': "LLaVA-LLaMA-3",
+       'llava-llama-3': "LLaVA-Llama-3",
        'flan-t5-xxl': 'InstructBLIP-Flan-T5-XXL',
        'flan-vicuna-13b': 'InstructBLIP-Vicuna-13B',
         'idefics2-8b': 'IDEFICS2-8B',
         'mplug-owl2-llama2-7b': 'mPLUG-Owl-v2',
-        'cogvlm-base': 'CogVLM2-LLaMA-3',
+        'cogvlm-base': 'CogVLM2-Llama-3',
     }
     main()
         
