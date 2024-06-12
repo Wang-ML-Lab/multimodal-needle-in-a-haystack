@@ -25,14 +25,12 @@ python ./annotations_trainval/file_to_caption.py
 ### Sampling Images
 ```
 python sample_images.py
-
 python sample_stitched_images.py  
 ```
 
 ## Sampling Needles
 ```
 python sample_single_needles.py
-
 python sample_multiple_needles.py
 ```
 ## Testing 
@@ -42,22 +40,15 @@ python needle.py
 ## Testing a Specific Model in Different Settings
 ```
 export BEGIN=0
-
 export N_SEQ=1000
-
 export N_NEEDLES=1 
-
 export MODEL_PROVIDER='Gemini'
-
 bash test.sh
 ```
 ## Collecting the Results
 ```
 export BEGIN=0
-
 export N_SEQ=1000
-
 python evaluate.py
-
 python evaluate_multi.py
 ```
