@@ -1,47 +1,46 @@
-# Multimodal-Needle-In-A-Haystack
+# Multimodal Needle in a Haystack (MMNeedle)
 
-[MMNeedle Dataset Link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)
+To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#constructing-the-dataset). 
 
-## Install Environment
+## Setting Up the Environment
 
-```bash
+```
 conda env create -f context.yml
 ```
+## Constructing the Dataset
 
-## Construct Dataset
-
-### Prepare Dataset
+### Preparing the Dataset
 
 Download [MS COCO](https://cocodataset.org/#download)
 
 put val2014, annotations_trainval dir to current directory.
 
-```bash
+```
 python ./annotations_trainval/file_to_caption.py 
 ```
 
 
 
 
-### Sample Images
-```bash
+### Sampling Images
+```
 python sample_images.py
 
 python sample_stitched_images.py  
 ```
 
-## Sample Needles
-```bash
+## Sampling Needles
+```
 python sample_single_needles.py
 
 python sample_multiple_needles.py
 ```
-## Test 
-```bash
+## Testing 
+```
 python needle.py
 ```
-## Test a Specific Model in Different Settings
-```bash
+## Testing a Specific Model in Different Settings
+```
 export BEGIN=0
 
 export N_SEQ=1000
@@ -52,8 +51,8 @@ export MODEL_PROVIDER='Gemini'
 
 bash test.sh
 ```
-## Evaluate the Results
-```bash
+## Collecting the Results
+```
 export BEGIN=0
 
 export N_SEQ=1000
