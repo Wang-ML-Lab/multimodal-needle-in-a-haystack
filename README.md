@@ -33,7 +33,7 @@ python sample_multiple_needles.py
 ```
 
 ## Step 3: Testing a Specific Model in Different Settings
-```
+```bash
 export BEGIN=0
 export N_SEQ=1000
 export N_NEEDLES=1 
@@ -41,7 +41,7 @@ export MODEL_PROVIDER='Gemini'
 bash test.sh
 ```
 ## Step 4: Collecting the Results
-```
+```bash
 export BEGIN=0
 export N_SEQ=1000
 python evaluate.py
