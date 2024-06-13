@@ -28,7 +28,7 @@ python sample_images.py
 python sample_stitched_images.py  
 ```
 
-## Sampling Needles
+### Sampling Needles
 ```
 python sample_single_needles.py
 python sample_multiple_needles.py
