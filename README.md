@@ -2,12 +2,12 @@
 
 To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#constructing-the-dataset). 
 
-## Setting Up the Environment
+## Step 1: Setting Up the Environment
 
 ```
 conda env create -f context.yml
 ```
-## Constructing the Dataset
+## Step 2: Constructing the Dataset
 
 ### Preparing the Dataset
 
@@ -18,8 +18,6 @@ put val2014, annotations_trainval dir to current directory.
 ```
 python ./annotations_trainval/file_to_caption.py 
 ```
-
-
 
 
 ### Sampling Images
@@ -34,7 +32,7 @@ python sample_single_needles.py
 python sample_multiple_needles.py
 ```
 
-## Testing a Specific Model in Different Settings
+## Step 3: Testing a Specific Model in Different Settings
 ```
 export BEGIN=0
 export N_SEQ=1000
@@ -42,7 +40,7 @@ export N_NEEDLES=1
 export MODEL_PROVIDER='Gemini'
 bash test.sh
 ```
-## Collecting the Results
+## Step 4: Collecting the Results
 ```
 export BEGIN=0
 export N_SEQ=1000
