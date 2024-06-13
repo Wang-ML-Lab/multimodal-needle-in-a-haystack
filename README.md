@@ -33,10 +33,7 @@ python sample_stitched_images.py
 python sample_single_needles.py
 python sample_multiple_needles.py
 ```
-## Testing 
-```
-python needle.py
-```
+
 ## Testing a Specific Model in Different Settings
 ```
 export BEGIN=0
