@@ -7,7 +7,7 @@ To use this benchmark, please download the MMNeedle dataset at this [link](https
 ```
 conda env create -f context.yml
 ```
-## Step 2: Constructing the Dataset
+## Step 2: Constructing the Dataset (Optional)
 
 ### Preparing the Dataset
 
