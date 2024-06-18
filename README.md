@@ -1,6 +1,6 @@
 # Multimodal Needle in a Haystack (MMNeedle)
 
-This repo contains the code for our 2024 paper:
+This repo contains the code and data for our benchmark paper:
 
 **Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal LLMs**<br>
 Hengyi Wang, Haizhou Shi, Shiwei Tan, Weiyi Qin, Wenyuan Wang, Tunyu Zhang, Akshay Nambi, Tanuja Ganu, Hao Wang
