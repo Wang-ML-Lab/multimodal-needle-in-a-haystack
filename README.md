@@ -47,3 +47,17 @@ export N_SEQ=1000
 python evaluate.py
 python evaluate_multi.py
 ```
+
+
+## Reference
+
+```
+@article{wang2024mmneedle,
+  title={Multimodal Needle in a Haystack:
+Benchmarking Long-Context Capability of
+Multimodal Large Language Models},
+  author={Wang, Hengyi and Shi,Haizhou and Tan, Shiwei and Qin, Weiyi and Wang, Wenyuan and Zhang, Tunyu and Nambi, Akshay and Ganu, Tanuja and Wang, Hao},
+  year={2024},
+  url={https://arxiv.org/abs/2406.11230},
+}
+```
