@@ -1,5 +1,12 @@
 # Multimodal Needle in a Haystack (MMNeedle)
 
+This repo contains the code for our 2024 paper:
+
+**Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal Large Language Models**<br>
+Hengyi Wang, Haizhou Shi, Shiwei Tan, Weiyi Qin, Wenyuan Wang, Tunyu Zhang, Akshay Nambi, Tanuja Ganu, Hao Wang
+
+[[Paper]](https://arxiv.org/pdf/2406.11230) [[MMNeedle Dataset]](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)
+
 To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#step-2-constructing-the-dataset-optional). 
 
 ## Overview
