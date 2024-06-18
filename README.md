@@ -51,11 +51,21 @@ python evaluate_multi.py
 
 ## Reference
 
-```
-@article{wang2024mmneedle,
+```bib
+@misc{wang2024multimodal,
   title={Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal Large Language Models},
-  author={Wang, Hengyi and Shi, Haizhou and Tan, Shiwei and Qin, Weiyi and Wang, Wenyuan and Zhang, Tunyu and Nambi, Akshay and Ganu, Tanuja and Wang, Hao},
+  author={Hengyi Wang and
+          Haizhou Shi and 
+          Shiwei Tan and
+          Weiyi Qin and
+          Wenyuan Wang and
+          Tuny Zhang and
+          Akshay Nambi and
+          Tanuja Ganu and
+          Hao Wang},
   year={2024},
-  url={https://arxiv.org/abs/2406.11230},
+  eprint={2406.11230},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG}
 }
 ```
