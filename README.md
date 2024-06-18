@@ -2,7 +2,7 @@
 
 This repo contains the code for our 2024 paper:
 
-**Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal Large Language Models**<br>
+**Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal LLMs**<br>
 Hengyi Wang, Haizhou Shi, Shiwei Tan, Weiyi Qin, Wenyuan Wang, Tunyu Zhang, Akshay Nambi, Tanuja Ganu, Hao Wang
 
 [[Paper]](https://arxiv.org/pdf/2406.11230) [[MMNeedle Dataset]](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)
