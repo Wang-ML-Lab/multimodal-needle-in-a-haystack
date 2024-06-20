@@ -4,7 +4,7 @@ This repo contains the code and data for our benchmark paper:
 
 **Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal LLMs**<br>
 H. Wang, H. Shi, S. Tan, W. Qin, W. Wang, T. Zhang, A. Nambi, T. Ganu, H. Wang<br>
-[[Paper]](https://arxiv.org/pdf/2406.11230) [[MMNeedle Dataset]](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)
+[[Paper](https://arxiv.org/pdf/2406.11230)] [[MMNeedle Dataset](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)]
 
 To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#step-2-constructing-the-dataset-optional). 
 
