@@ -9,6 +9,8 @@ H. Wang, H. Shi, S. Tan, W. Qin, W. Wang, T. Zhang, A. Nambi, T. Ganu, H. Wang<b
 To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#step-2-constructing-the-dataset-optional). 
 
 ## News
+(2024-06-27) New [project page](https://mmneedle.github.io/) set up for MMNeedle. 
+
 (2024-06-24) We released the *leaderboard* for Multimodal Long Context Understanding on [paper-with-code](https://paperswithcode.com/sota/long-context-understanding-on-mmneedle)!
 
 (2024-06-17) We released the *paper, code, and data* for Multimodal Needle in a Haystack (MMNeedle) benchmark!
