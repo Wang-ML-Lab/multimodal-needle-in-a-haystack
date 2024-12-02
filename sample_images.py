@@ -4,7 +4,25 @@ import random
 from PIL import Image
 import base64
 import json
+import numpy as np
 from utils import load_image_paths
+
+def preprocess_image(image, target_size=(224, 224), rescale_factor=1/255.0, mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)):
+    """
+    Preprocess the image:
+    - Resize to target size
+    - Rescale pixel values
+    - Normalize using mean and std
+    """
+    # Resize image
+    image = image.resize(target_size)
+    # Convert to RGB
+    image = image.convert("RGB")
+    # Convert to numpy array for rescaling and normalization
+    image_array = np.array(image) * rescale_factor
+    # Normalize pixel values
+    normalized_image = (image_array - mean) / std
+    return Image.fromarray((normalized_image * 255).astype('uint8'))
 
 def stitch_images(images, N, RES):
     """
@@ -21,7 +39,7 @@ def stitch_images(images, N, RES):
 def main():
     N_COL = N_ROW = 1  # number of images in each row and column
     N_IMG = 10000  # total number of sticked images to create
-    RES = 256  # resolution of each subimage in the sticked image
+    RES = 224  # resolution of each subimage in the sticked image
 
     # Load image paths from a given pickle file and directory
     #image_paths = load_image_paths('annotations_trainval/file_to_caption.pkl')
@@ -44,6 +62,7 @@ def main():
     sampled_paths = random.sample(image_paths, N_IMG)
     for i,path in enumerate(sampled_paths):
         image = Image.open(path)
+        image = preprocess_image(image, target_size=(RES, RES), rescale_factor=1/255.0, mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
         filename = f'COCO_val2014_stitched_{i:04}.jpg'
 
         # Create metadata for this stitched image

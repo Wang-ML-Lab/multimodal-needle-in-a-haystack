@@ -16,9 +16,6 @@ import httpx
 import time
 
 
-
-
-
 def needle_test(images, instruction):
   # load model, TODO: add more models
   if model_provider == "Gemini":
@@ -216,13 +213,6 @@ def needle_test(images, instruction):
         response = response[0]['text']
         print("response:",response)
   return response
-
-
-
-
-
-
-
 
 def main(): 
     with open('annotations_trainval/file_to_caption.pkl', "rb") as image_file:

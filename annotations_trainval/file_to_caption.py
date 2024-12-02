@@ -1,9 +1,17 @@
 import json
 import pickle
 # Path to the input JSON file
-input_file_path = 'captions_val2014.json'
+input_file_path = '/mnt/c/CS228/multimodal-needle-in-a-haystack/annotations/captions_val2014.json'
+
 # Path to the output JSON file
 output_file_path = 'captions_val2014_newline.json'
+
+# try:
+#     with open(input_file_path, 'r') as file:
+#         data = json.load(file)
+#         print('SUCCESS!!!')
+# except Exception as e:
+#     print(e)
 
 
 # use map to iterate over the images and annotations

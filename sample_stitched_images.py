@@ -5,6 +5,21 @@ from PIL import Image
 import base64
 import json
 from utils import load_image_paths
+import numpy as np
+
+def preprocess_image(image, size=(224, 224), rescale_factor=1/255, mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)):
+    """
+    Preprocess a single image:
+    - Resize to specified dimensions.
+    - Normalize pixel values.
+    """
+    image = image.resize(size)
+    image = Image.Image.convert(image, "RGB")
+    # Rescale pixel values to [0, 1]
+    pixels = (rescale_factor * np.array(image)).astype(np.float32)
+    # Normalize pixel values
+    normalized_pixels = (pixels - mean) / std
+    return Image.fromarray((normalized_pixels * 255).astype(np.uint8))
 
 def stitch_images(images, N, RES):
     """
@@ -19,14 +34,14 @@ def stitch_images(images, N, RES):
 
 
 def main():
-    N_COL = N_ROW = 2  # number of images in each row and column
+    N_COL = N_ROW = 8  # number of images in each row and column
     N_IMG = 10000  # total number of sticked images to create
-    RES = 256  # resolution of each subimage in the sticked image
+    RES = 224  # resolution of each subimage in the sticked image
 
     # Load image paths from a given pickle file and directory
     #image_paths = load_image_paths('annotations_trainval/file_to_caption.pkl')
 
-    load_image_paths('val2014')
+    image_paths=load_image_paths('val2014')
 
     # Ensure we have enough images
     assert len(image_paths) >= N_ROW * N_COL, "Not enough images to create a sticked image."
@@ -45,7 +60,7 @@ def main():
     unique_paths = set()
     for i in range(N_IMG):
         sampled_paths = random.sample(image_paths, N_ROW * N_COL)
-        images = [Image.open(path) for path in sampled_paths]
+        images = [preprocess_image(Image.open(path)) for path in sampled_paths]
         stitched_image = stitch_images(images, N_ROW, RES)
         filename = f'COCO_val2014_stitched_{i:04}.jpg'
         stitched_image.save(os.path.join(output_dir, filename))

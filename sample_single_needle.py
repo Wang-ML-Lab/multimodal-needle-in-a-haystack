@@ -31,7 +31,8 @@ def main():
             idx, loc = divmod(j, N_ROW*N_COL)
             row, col = divmod(loc, N_COL)
             stitched_path = sequence[idx]
-            stitched_path = stitched_path.split('/')[-1]
+            # stitched_path = stitched_path.split('/')[-1]
+            stitched_path = os.path.basename(sequence[idx])
             # locate the image path in the stitched image
             target_path = meta_data[stitched_path][str(row)+'_'+str(col)]
             #print(idx, row, col, stitched_path, target_path)
@@ -43,7 +44,8 @@ def main():
             #exclude_images = meta_data[stitched_path].values()
             exclude_images = []
             for path in stitched_paths:
-                exclude_images += meta_data[path].values()
+                # exclude_images += meta_data[path].values()
+                exclude_images += meta_data[os.path.basename(path)].values()
             target_path = random.choice([path for path in image_paths if path not in exclude_images])
         
         sequence_data = {
