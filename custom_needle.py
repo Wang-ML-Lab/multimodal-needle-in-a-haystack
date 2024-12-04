@@ -1,5 +1,4 @@
 import base64
-import requests
 import json
 import pickle
 import random
@@ -9,115 +8,30 @@ import io
 import time
 from transformers import PaliGemmaForConditionalGeneration, PaliGemmaConfig, PaliGemmaProcessor
 import torch
-#from modeling_gemma import KVCache
-#from processing_paligemma import PaliGemmaProcessor
-from typing import Tuple
-#from safetensors import safe_open
-import glob
-
-""""
-def _sample_top_p(probs: torch.Tensor, p: float):
-    # (B, vocab_size)
-    probs_sort, probs_idx = torch.sort(probs, dim=-1, descending=True)
-    # (B, vocab_size)
-    probs_sum = torch.cumsum(probs_sort, dim=-1)
-    # (B, vocab_size)
-    # (Substracting "probs_sort" shifts the cumulative sum by 1 position to the right before masking)
-    mask = probs_sum - probs_sort > p
-    # Zero out all the probabilities of tokens that are not selected by the Top P
-    probs_sort[mask] = 0.0
-    # Redistribute the probabilities so that they sum up to 1.
-    probs_sort.div_(probs_sort.sum(dim=-1, keepdim=True))
-    # Sample a token (its index) from the top p distribution
-    next_token = torch.multinomial(probs_sort, num_samples=1)
-    # Get the token position in the vocabulary corresponding to the sampled index
-    next_token = torch.gather(probs_idx, -1, next_token)
-    return 
-
-  
-def load_hf_model(model_path: str, device: str) -> Tuple[PaliGemmaForConditionalGeneration, AutoTokenizer]:
-    "Load the tokenizer "
-    model_path = /google/
-    tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side="right")
-    assert tokenizer.padding_side == "right"
-
-    # Find all the *.safetensors files
-    safetensors_files = glob.glob(os.path.join(model_path, "*.safetensors"))
-
-    # ... and load them one by one in the tensors dictionary
-    tensors = {}
-    for safetensors_file in safetensors_files:
-        with safe_open(safetensors_file, framework="pt", device="cpu") as f:
-            for key in f.keys():
-                tensors[key] = f.get_tensor(key)
-
-    # Load the model's config
-    with open(os.path.join(model_path, "config.json"), "r") as f:
-        model_config_file = json.load(f)
-        config = PaliGemmaConfig(**model_config_file)
-
-    # Create the model using the configuration
-    model = PaliGemmaForConditionalGeneration(config).to(device)
-
-    @ Load the state dict of the model
-    model.load_state_dict(tensors, strict=False)
-
-    Tie weights
-    model.tie_weights()
-    
-
-
-
-
-def load_paligemma_model(device='cpu'):
-    model = PaliGemmaForConditionalGeneration.from_pretrained('paligemma-3b-pt-224')
-    processor = PaliGemmaProcessor.from_pretrained('paligemma-3b-pt-224')
-
-    # Load pre-trained weights
-    model, processor = load_hf_model(model_path, device)
-    model.load_state_dict(torch.load(model_path, map_location="cpu"))
-    model = model.to(device).eval()
-    return model, processor """
-
 
 def needle_test(images, instruction):
-    # Function to process input images and instruction and generate the output using Paligemma model.
-    device = "cpu"
-    max_tokens_to_generate = 500
-    temperature = 0.8
-    top_p = 0.9
-    do_sample = False
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    
+    try:
+        model = PaliGemmaForConditionalGeneration.from_pretrained('google/paligemma-3b-pt-224')
+        processor = PaliGemmaProcessor.from_pretrained('google/paligemma-3b-pt-224')
 
-    # Load the processor and model
-    model = PaliGemmaForConditionalGeneration.from_pretrained('google/paligemma-3b-pt-224')
-    processor = PaliGemmaProcessor.from_pretrained('google/paligemma-3b-pt-224')
+        model.to(device).eval()
 
-    model.to(device).eval()
+        pil_images = [Image.open(io.BytesIO(base64.b64decode(img))) for img in images]
+        model_inputs = processor(text=[instruction], images=pil_images, return_tensors="pt").to(device)
 
-    # Process the images and instructions
-    pil_images = [Image.open(io.BytesIO(base64.b64decode(img))) for img in images]
-    model_inputs = processor(text=instruction, images=pil_images, return_tensors="pt")
-    pixel_values = model_inputs["pixel_values"]
-    input_ids = model_inputs["input_ids"]
-    attention_mask = model_inputs["attention_mask"]
-    print(model_inputs["input_ids"].shape)  # For text tokens
-    print(model_inputs["pixel_values"].shape)  # For image embeddings
+        input_len = model_inputs["input_ids"].shape[-1]
+        generation = model.generate(**model_inputs, max_new_tokens=100, do_sample=False)
+        generation = generation[0][input_len:]  
 
-    # Generate tokens using the model
-    generated_tokens = model.generate(
-        input_ids=input_ids,
-        attention_mask=attention_mask,
-        pixel_values=pixel_values,
-        max_length=max_tokens_to_generate,
-        temperature=temperature,
-        top_p=top_p,
-        do_sample=do_sample,
-        eos_token_id=model.config.eos_token_id
-    )
+        decoded_response = processor.batch_decode(generation, skip_special_tokens=True)[0]
+        return decoded_response
 
-    # Decode the generated tokens
-    decoded_response = processor.batch_decode(generated_tokens[0], skip_special_tokens=True)
-    return decoded_response
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 
 
 
@@ -155,7 +69,6 @@ def main():
             target_path = meta_data[id]['target']
             target_path = [tt.split('/')[-1] for tt in target_path]
         
-        # Load images
         images = []
         for path in image_paths:
             with open(path, 'rb') as f:
