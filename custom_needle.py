@@ -7,16 +7,15 @@ import os
 from PIL import Image
 import io
 import time
-from transformers import AutoConfig, AutoTokenizer
+from transformers import PaliGemmaForConditionalGeneration, PaliGemmaConfig, PaliGemmaProcessor
 import torch
-from modeling_gemma import PaliGemmaForConditionalGeneration, KVCache, PaliGemmaConfig
-from processing_paligemma import PaliGemmaProcessor
+#from modeling_gemma import KVCache
+#from processing_paligemma import PaliGemmaProcessor
 from typing import Tuple
-from safetensors import safe_open
+#from safetensors import safe_open
 import glob
 
-
-
+""""
 def _sample_top_p(probs: torch.Tensor, p: float):
     # (B, vocab_size)
     probs_sort, probs_idx = torch.sort(probs, dim=-1, descending=True)
@@ -33,10 +32,12 @@ def _sample_top_p(probs: torch.Tensor, p: float):
     next_token = torch.multinomial(probs_sort, num_samples=1)
     # Get the token position in the vocabulary corresponding to the sampled index
     next_token = torch.gather(probs_idx, -1, next_token)
-    return next_token
+    return 
 
+  
 def load_hf_model(model_path: str, device: str) -> Tuple[PaliGemmaForConditionalGeneration, AutoTokenizer]:
-    # Load the tokenizer
+    "Load the tokenizer "
+    model_path = /google/
     tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side="right")
     assert tokenizer.padding_side == "right"
 
@@ -58,84 +59,69 @@ def load_hf_model(model_path: str, device: str) -> Tuple[PaliGemmaForConditional
     # Create the model using the configuration
     model = PaliGemmaForConditionalGeneration(config).to(device)
 
-    # Load the state dict of the model
+    @ Load the state dict of the model
     model.load_state_dict(tensors, strict=False)
 
-    # Tie weights
+    Tie weights
     model.tie_weights()
+    
 
-    return (model, tokenizer)
+
+
 
 def load_paligemma_model(device='cpu'):
-    config_path = "paligemma-3b-pt-224/config.json"
-    model_path = "paligemma-3b-pt-224"
-    
-    config = AutoConfig.from_pretrained(config_path)
-    
-    # model = PaliGemmaForConditionalGeneration(config)
+    model = PaliGemmaForConditionalGeneration.from_pretrained('paligemma-3b-pt-224')
+    processor = PaliGemmaProcessor.from_pretrained('paligemma-3b-pt-224')
 
     # Load pre-trained weights
-    model, tokenizer = load_hf_model(model_path, device)
+    model, processor = load_hf_model(model_path, device)
     model.load_state_dict(torch.load(model_path, map_location="cpu"))
     model = model.to(device).eval()
-    return model, tokenizer
+    return model, processor """
+
 
 def needle_test(images, instruction):
-    device='cpu'
-    max_tokens_to_generate=100
-    temperature=0.8
-    top_p=0.9
-    do_sample=False
-    # Load the tokenizer and model configuration
-    # config_path = "C:/CS228/paligemma-3b-pt-224"
-    # tokenizer = AutoTokenizer.from_pretrained(config_path)
+    # Function to process input images and instruction and generate the output using Paligemma model.
+    device = "cpu"
+    max_tokens_to_generate = 500
+    temperature = 0.8
+    top_p = 0.9
+    do_sample = False
 
-    # Load the Paligemma model
-    model, tokenizer = load_paligemma_model(device)
-    model.to(device)  # Ensure model is on the right device
+    # Load the processor and model
+    model = PaliGemmaForConditionalGeneration.from_pretrained('google/paligemma-3b-pt-224')
+    processor = PaliGemmaProcessor.from_pretrained('google/paligemma-3b-pt-224')
 
-    print('Load Modeling Success...\n')
+    model.to(device).eval()
 
-    # Tokenize the instruction and preprocess the image
-    processor = PaliGemmaProcessor.from_pretrained(config_path)
-    model_inputs = processor(text=instruction, images=images)
+    # Process the images and instructions
+    pil_images = [Image.open(io.BytesIO(base64.b64decode(img))) for img in images]
+    model_inputs = processor(text=instruction, images=pil_images, return_tensors="pt")
     pixel_values = model_inputs["pixel_values"]
     input_ids = model_inputs["input_ids"]
     attention_mask = model_inputs["attention_mask"]
-    print('Instruction and Image finished preprocessing...')
+    print(model_inputs["input_ids"].shape)  # For text tokens
+    print(model_inputs["pixel_values"].shape)  # For image embeddings
 
-    kv_cache = KVCache()
+    # Generate tokens using the model
+    generated_tokens = model.generate(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        pixel_values=pixel_values,
+        max_length=max_tokens_to_generate,
+        temperature=temperature,
+        top_p=top_p,
+        do_sample=do_sample,
+        eos_token_id=model.config.eos_token_id
+    )
 
-    generated_tokens = []
-    stop_token = tokenizer.eos_token_id
-    for _ in range(max_tokens_to_generate):
-        # Forward pass and get logits
-        outputs = model(input_ids=input_ids, pixel_values=pixel_values, attention_mask=attention_mask, kv_cache=kv_cache)
-        next_token_logits = outputs.logits[:, -1, :]
-        kv_cache = outputs["kv_cache"]
-
-        # Sampling or greedy decoding
-        if do_sample:
-            next_token = _sample_top_p(next_token_logits, top_p)
-        else:
-            next_token = torch.argmax(next_token_logits, dim=-1, keepdim=True)
-
-        generated_tokens.append(next_token)
-        input_ids = next_token.unsqueeze(-1)
-        attention_mask = torch.cat([attention_mask, torch.ones((1, 1), device=input_ids.device)], dim=-1)
-
-        # Stop if the stop token is generated
-        if next_token.item() == stop_token:
-            break
-
-    generated_tokens = torch.cat(generated_tokens, dim=-1)
-    decoded_response = tokenizer.decode(generated_tokens, skip_special_tokens=True)
-    print('Decoded Response finished...')
+    # Decode the generated tokens
+    decoded_response = processor.batch_decode(generated_tokens[0], skip_special_tokens=True)
     return decoded_response
 
 
-def main(): 
 
+def main(): 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
     
@@ -187,10 +173,12 @@ def main():
         if N_NEEDLES == 1:
             prompt = f"Given {SEQ_LENGTH} {img_str} indexed from 1 to {SEQ_LENGTH}, each divided into {N_ROW}*{N_COL} {subimage_str}, identify the subimage that best matches the provided caption. Respond with 'index, row, column' and nothing else. For example, '1, 2, 3' indicates the subimage in the first image, second row, and third column. If no match is found, respond only with '-1'."
             instruction = prompt + "\n" + "Caption: " + caption
+            
         else:
             output_format = '; '.join([f'index_{i+1}, row_{i+1}, column_{i+1}' for i in range(N_NEEDLES)])
             prompt = f"Given {SEQ_LENGTH} {img_str} indexed from 1 to {SEQ_LENGTH}, each divided into {N_ROW}*{N_COL} {subimage_str}, identify the subimages that best match the provided {N_NEEDLES} captions. Respond in the format: {output_format}. Only provide this information."
             instruction = prompt + '\n' + '\n'.join([f"Caption_{i+1}: " + captions[i] for i in range(N_NEEDLES)])
+            
         
         print('Instruction:', instruction)
         if N_NEEDLES == 1:
@@ -201,19 +189,22 @@ def main():
             gt = f'{idx+1}, {row+1}, {col+1}'
         else:
             gt = '; '.join([f'{idx_list[i]+1}, {row_list[i]+1}, {col_list[i]+1}' for i in range(N_NEEDLES)])
-        
-        data = {
-            'id': id,
-            'response': response,
-            'ground_truth': gt,
-            'target_path': target_path,
-            'caption': (captions if N_NEEDLES > 1 else caption)
-        }
-        results.append(data)
 
+        print(f"Response: {response}  | GT: {gt}")
+
+        results.append({
+            "id": id,
+            "input": instruction,
+            "gt": gt,
+            "pred": response,
+            "time": time.time() - t0,
+        })
+
+    print(f"Results: {len(results)}")
+    output_path = f"results_{N_SEQ}.json"
+    with open(output_path, "w") as f:
+        json.dump(results, f, indent=4)
     
-    with open(output_json, 'w') as f:
-        json.dump(results, f)
 
 
 if __name__ == "__main__":
