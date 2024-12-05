@@ -6,33 +6,61 @@ import os
 from PIL import Image
 import io
 import time
-from transformers import PaliGemmaForConditionalGeneration, PaliGemmaConfig, PaliGemmaProcessor
+from transformers import PaliGemmaForConditionalGeneration, PaliGemmaConfig, PaliGemmaProcessor, AutoModelForImageTextToText, AutoTokenizer, AutoProcessor
 import torch
 
+def resize_images(pil_images, target_size=(156, 156)):
+    resized_images = []
+    for i, img in enumerate(pil_images):
+        resized_img = img.resize(target_size, Image.Resampling.LANCZOS)
+        resized_images.append(resized_img)
+        print(f"Image {i + 1} resized to: {resized_img.size}")
+    return resized_images
+
 def needle_test(images, instruction):
+    print(type(images))
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
     try:
-        model = PaliGemmaForConditionalGeneration.from_pretrained('google/paligemma-3b-pt-224')
-        processor = PaliGemmaProcessor.from_pretrained('google/paligemma-3b-pt-224')
-
+        model_path = 'google/paligemma-3b-pt-224'
+        # Load model and processor
+        
+        model = AutoModelForImageTextToText.from_pretrained(model_path, ignore_mismatched_sizes=True)
+        # model = PaliGemmaForConditionalGeneration.from_pretrained("google/paligemma-3b-pt-224")
+        processor = AutoProcessor.from_pretrained(model_path)
+        # tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
         model.to(device).eval()
 
+        # Decode base64 images and prepare them
         pil_images = [Image.open(io.BytesIO(base64.b64decode(img))) for img in images]
-        model_inputs = processor(text=[instruction], images=pil_images, return_tensors="pt").to(device)
+        resized_pil_images = resize_images(pil_images)
+        img = resized_pil_images[0]
 
-        input_len = model_inputs["input_ids"].shape[-1]
-        generation = model.generate(**model_inputs, max_new_tokens=100, do_sample=False)
-        generation = generation[0][input_len:]  
 
-        decoded_response = processor.batch_decode(generation, skip_special_tokens=True)[0]
-        return decoded_response
+        # Add special tokens to instruction
+        num_images = len(pil_images)
+        num_images = 1
+        image_tokens = " ".join(["<image>"] * num_images)
+        modified_instruction = f"{image_tokens} <bos> {instruction}"
+
+        
+        inputs = processor(
+            images = img,
+            text = modified_instruction, 
+            return_tensors="pt"
+        )
+
+        input_ids = inputs.input_ids.to(model.device)
+
+        print('Generating output...\n')
+        outputs = model.generate(input_ids, max_new_tokens=30)
+        decoded_output = processor.batch_decode(outputs, skip_special_tokens=True)[0]
+
+        print(f"Outputs: {decoded_output}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
-
-
 
 
 def main(): 
@@ -89,7 +117,9 @@ def main():
             
         else:
             output_format = '; '.join([f'index_{i+1}, row_{i+1}, column_{i+1}' for i in range(N_NEEDLES)])
-            prompt = f"Given {SEQ_LENGTH} {img_str} indexed from 1 to {SEQ_LENGTH}, each divided into {N_ROW}*{N_COL} {subimage_str}, identify the subimages that best match the provided {N_NEEDLES} captions. Respond in the format: {output_format}. Only provide this information."
+            prompt = f"Given {SEQ_LENGTH} {img_str} indexed 1 to {SEQ_LENGTH}, each divided into {N_ROW}x{N_COL} {subimage_str}, identify the {N_NEEDLES} subimages that best match the captions. Respond in the format: {output_format}."
+
+            # prompt = f"Given {SEQ_LENGTH} {img_str} indexed from 1 to {SEQ_LENGTH}, each divided into {N_ROW}*{N_COL} {subimage_str}, identify the subimages that best match the provided {N_NEEDLES} captions. Respond in the format: {output_format}. Only provide this information."
             instruction = prompt + '\n' + '\n'.join([f"Caption_{i+1}: " + captions[i] for i in range(N_NEEDLES)])
             
         
@@ -121,11 +151,12 @@ def main():
 
 
 if __name__ == "__main__":
-    N_ROW = int(os.getenv('N_ROW', '1'))  
-    N_COL = int(os.getenv('N_COL', '1'))
-    SEQ_LENGTH = int(os.getenv('SEQ_LENGTH', '10'))
+    N_ROW = int(os.getenv('N_ROW', '2'))  
+    N_COL = int(os.getenv('N_COL', '2'))
+    SEQ_LENGTH = int(os.getenv('SEQ_LENGTH', '1'))
     BEGIN = int(os.getenv('BEGIN', '0'))
-    N_SEQ = int(os.getenv('N_SEQ', '10'))
+    # N_SEQ = int(os.getenv('N_SEQ', '10'))
+    N_SEQ = int(os.getenv('N_SEQ', '1'))
     N_NEEDLES = int(os.getenv('N_NEEDLES', '1'))
     random.seed(0)
     
