@@ -15,8 +15,8 @@ def main():
         
         
         print(response_path)
-        model_provider, model_version, SEQUENCE_LENGTH, N_ROW, _ = response_path.split('_')
-        
+        # model_provider, model_version, SEQUENCE_LENGTH, N_ROW, _ = response_path.split('_')
+        model_provider, model_version, SEQUENCE_LENGTH, N_ROW = 'paligemma', '3b', 10, 1
         with open(os.path.join(response_dir, response_path), 'r') as f:
             responses = json.load(f)
 
@@ -32,8 +32,8 @@ def main():
 
         for id in range(len(responses)):
             response = responses[id]
-            gt = response['ground_truth']
-            pred = response['response']
+            gt = response['gt']
+            pred = response['pred']
             real_id = response['id']
 
             if pred is None:
@@ -92,6 +92,9 @@ def main():
                 acc_data[model_version][int(SEQUENCE_LENGTH)* int(N_ROW)] = []
             acc_data[model_version][int(SEQUENCE_LENGTH)* int(N_ROW)] = exact_match
         # to .2f%
+        exist_accuracy=0
+        index_accuracy=0
+        exact_accuracy=0
         print(f"Exist accuracy: {exist_accuracy*100:.2f}")
         if gt != '-1':
             print(f"Index accuracy: {index_accuracy*100:.2f}")
@@ -244,6 +247,7 @@ if __name__ == "__main__":
     output_suffix = '_' + str(BEGIN) + '_' + str(BEGIN + N_SEQ-1)
     # all paths in response_dir
     response_dir = os.path.join(response_dir, dataset_dir+output_suffix)
+    response_dir = 'C:\CS228\multimodal-needle-in-a-haystack\\response\\COCO_val2014_0_9'
     response_paths = os.listdir(response_dir)
     print('testing', response_dir)
     model_names = {
@@ -259,6 +263,7 @@ if __name__ == "__main__":
         'idefics2-8b': 'IDEFICS2-8B',
         'mplug-owl2-llama2-7b': 'mPLUG-Owl-v2',
         'cogvlm-base': 'CogVLM2-Llama-3',
+        'paligemma-3b-pt-224' : 'paligemma',
     }
     main()
         

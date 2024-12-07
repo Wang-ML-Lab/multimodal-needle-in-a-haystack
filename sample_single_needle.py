@@ -64,9 +64,9 @@ def main():
 
 if __name__ == "__main__":
     random.seed(0)
-    SEQUENCE_LENGTH = 10  # Length of each image sequence
-    N_SEQUENCES = 10000  # Number of sequences to generate
-    N_ROW = N_COL = 1
+    SEQUENCE_LENGTH = 1  # Length of each image sequence
+    N_SEQUENCES = 2000  # Number of sequences to generate
+    N_ROW = N_COL = 2
     data_dir = 'images_stitched'
     meta_path = 'metadata_stitched'
 

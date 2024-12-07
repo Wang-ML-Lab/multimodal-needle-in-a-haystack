@@ -25,17 +25,18 @@ def needle_test(images, instruction):
         model_path = 'google/paligemma-3b-pt-224'
         # Load model and processor
         
-        model = AutoModelForImageTextToText.from_pretrained(model_path, ignore_mismatched_sizes=True)
+        # model = AutoModelForImageTextToText.from_pretrained(model_path, ignore_mismatched_sizes=True)
         # model = PaliGemmaForConditionalGeneration.from_pretrained("google/paligemma-3b-pt-224")
-        processor = AutoProcessor.from_pretrained(model_path)
+        # processor = AutoProcessor.from_pretrained(model_path)
         # tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
-        model.to(device).eval()
+        # model.to(device).eval()
 
         # Decode base64 images and prepare them
         pil_images = [Image.open(io.BytesIO(base64.b64decode(img))) for img in images]
         resized_pil_images = resize_images(pil_images)
+        # print(images[0])
         img = resized_pil_images[0]
-
+        print(f"img: {img}")
 
         # Add special tokens to instruction
         num_images = len(pil_images)
@@ -44,19 +45,20 @@ def needle_test(images, instruction):
         modified_instruction = f"{image_tokens} <bos> {instruction}"
 
         
-        inputs = processor(
-            images = img,
-            text = modified_instruction, 
-            return_tensors="pt"
-        )
+        # inputs = processor(
+        #     images = img,
+        #     text = modified_instruction, 
+        #     return_tensors="pt"
+        # )
 
-        input_ids = inputs.input_ids.to(model.device)
+        # input_ids = inputs.input_ids.to(model.device)
 
-        print('Generating output...\n')
-        outputs = model.generate(input_ids, max_new_tokens=30)
-        decoded_output = processor.batch_decode(outputs, skip_special_tokens=True)[0]
+        # print('Generating output...\n')
+        # outputs = model.generate(input_ids, max_new_tokens=30)
+        # print(f'outputs{outputs}')
+        # decoded_output = processor.batch_decode(outputs, skip_special_tokens=True)[0]
 
-        print(f"Outputs: {decoded_output}")
+        # print(f"Outputs: {decoded_output}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -98,11 +100,17 @@ def main():
             target_path = [tt.split('/')[-1] for tt in target_path]
         
         images = []
+        image_names = []
         for path in image_paths:
             with open(path, 'rb') as f:
                 image = f.read()
             base64_image = base64.b64encode(image).decode('utf-8')
             images.append(base64_image)
+
+            # Extract and store the image name
+            image_name = os.path.basename(path)
+            image_names.append(image_name)
+            print(f"Image being passed: {image_name}")
 
         if N_NEEDLES == 1:
             caption = file_to_caption[target_path]
