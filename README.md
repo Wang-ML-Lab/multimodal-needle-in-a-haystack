@@ -10,7 +10,7 @@ H. Wang, H. Shi, S. Tan, W. Qin, W. Wang, T. Zhang, A. Nambi, T. Ganu, H. Wang<b
 To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#step-2-constructing-the-dataset-optional). 
 
 ## News
-[2025-01-22] MMNeedle is accepted to NAACL 2025. 
+[2025-01-22] MMNeedle is accepted to **NAACL 2025**. 
 
 [2024-06-27] New [project page](https://mmneedle.github.io/) set up for MMNeedle. 
 
@@ -85,7 +85,7 @@ python evaluate_multi.py
 ## Reference
 
 ```bib
-@misc{wang2024multimodal,
+@inproceedings{wang2025multimodal,
   title={Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal Large Language Models},
   author={Hengyi Wang and
           Haizhou Shi and 
@@ -96,9 +96,7 @@ python evaluate_multi.py
           Akshay Nambi and
           Tanuja Ganu and
           Hao Wang},
-  year={2024},
-  eprint={2406.11230},
-  archivePrefix={arXiv},
-  primaryClass={cs.LG}
+  booktitle={Proceedings of the 2025 Conference of the North American Chapter of the Association for Computational Linguistics},
+  year={2025}
 }
 ```
