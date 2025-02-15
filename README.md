@@ -38,7 +38,9 @@ To use this benchmark, please download the MMNeedle dataset at this [link](https
 ## Step 1: Setting Up the Environment
 
 ```
-conda env create -f context.yml
+conda env create -n mmneedle python==3.12
+conda activate mmneedle
+pip install -r requirements.txt
 ```
 ## Step 2: Constructing the Dataset (Optional)
 
@@ -61,7 +63,7 @@ python sample_stitched_images.py
 
 ### Sampling Needles
 ```
-python sample_single_needles.py
+python sample_single_needle.py
 python sample_multiple_needles.py
 ```
 

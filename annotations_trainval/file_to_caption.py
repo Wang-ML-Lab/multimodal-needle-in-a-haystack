@@ -1,9 +1,9 @@
 import json
 import pickle
 # Path to the input JSON file
-input_file_path = 'captions_val2014.json'
+input_file_path = './annotations/captions_val2014.json'
 # Path to the output JSON file
-output_file_path = 'captions_val2014_newline.json'
+output_file_path = './captions_val2014_newline.json'
 
 
 # use map to iterate over the images and annotations
