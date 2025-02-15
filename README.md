@@ -61,7 +61,7 @@ python sample_stitched_images.py
 
 ### Sampling Needles
 ```
-python sample_single_needles.py
+python sample_single_needle.py
 python sample_multiple_needles.py
 ```
 
