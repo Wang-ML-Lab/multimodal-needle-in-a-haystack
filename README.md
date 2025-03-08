@@ -10,7 +10,7 @@ H. Wang, H. Shi, S. Tan, W. Qin, W. Wang, T. Zhang, A. Nambi, T. Ganu, H. Wang<b
 To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#step-2-constructing-the-dataset-optional). 
 
 ## News
-[2025-03-07] MMNeedle is selected as **Oral Presentation** at NAACL!
+[2025-03-07] MMNeedle is selected for an **Oral Presentation** at NAACL!
 
 [2025-01-22] MMNeedle is accepted to **NAACL 2025**. 
 
