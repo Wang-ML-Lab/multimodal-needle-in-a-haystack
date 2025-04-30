@@ -89,18 +89,28 @@ python evaluate_multi.py
 ## Reference
 
 ```bib
-@inproceedings{wang2025multimodal,
-  title={Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal Large Language Models},
-  author={Hengyi Wang and
-          Haizhou Shi and 
-          Shiwei Tan and
-          Weiyi Qin and
-          Wenyuan Wang and
-          Tuny Zhang and
-          Akshay Nambi and
-          Tanuja Ganu and
-          Hao Wang},
-  booktitle={Proceedings of the 2025 Conference of the North American Chapter of the Association for Computational Linguistics},
-  year={2025}
+@inproceedings{wang-etal-2025-multimodal,
+    title = "Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal Large Language Models",
+    author = "Wang, Hengyi  and
+      Shi, Haizhou  and
+      Tan, Shiwei  and
+      Qin, Weiyi  and
+      Wang, Wenyuan  and
+      Zhang, Tunyu  and
+      Nambi, Akshay  and
+      Ganu, Tanuja  and
+      Wang, Hao",
+    editor = "Chiruzzo, Luis  and
+      Ritter, Alan  and
+      Wang, Lu",
+    booktitle = "Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)",
+    month = apr,
+    year = "2025",
+    address = "Albuquerque, New Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.naacl-long.166/",
+    pages = "3221--3241",
+    ISBN = "979-8-89176-189-6",
+    abstract = "Multimodal Large Language Models (MLLMs) have shown significant promise in various applications, leading to broad interest from researchers and practitioners alike. However, a comprehensive evaluation of their long-context capabilities remains underexplored. To address these gaps, we introduce the MultiModal Needle-in-a-haystack (MMNeedle) benchmark, specifically designed to assess the long-context capabilities of MLLMs. Besides multi-image input, we employ image stitching to further increase the input context length, and develop a protocol to automatically generate labels for sub-image level retrieval. Essentially, MMNeedle evaluates MLLMs by stress-testing their capability to locate a target sub-image (needle) within a set of images (haystack) based on textual instructions and descriptions of image contents. This setup necessitates an advanced understanding of extensive visual contexts and effective information retrieval within long-context image inputs. With this benchmark, we evaluate state-of-the-art MLLMs, encompassing both API-based and open-source models. The findings reveal that GPT-4o consistently surpasses other models in long-context scenarios, but suffers from hallucination problems in negative samples, i.e., when needles are not in the haystacks. Our comprehensive long-context evaluation of MLLMs also sheds lights on the considerable performance gap between API-based and open-source models. All the code, data, and instructions required to reproduce the main results are available at https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack."
 }
 ```
