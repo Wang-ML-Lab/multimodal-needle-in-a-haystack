@@ -86,7 +86,7 @@ sympy==1.13.1
 tokenizers==0.21.0
 tqdm 
 traitlets==5.14.3
-transformers==4.48.3
+transformers==4.50.0
 truststore 
 typing_extensions==4.12.2
 tzdata==2025.1
