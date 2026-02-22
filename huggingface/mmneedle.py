@@ -20,12 +20,22 @@ needle is absent. This script exposes the complete benchmark as a Hugging Face
 reconstructing the data from scratch or pulling it from Google Drive.
 """
 
-_BASE_URL = "https://huggingface.co/datasets/Wang-ML-Lab/MMNeedle/resolve/main"
-_URLS = {
-    "images": f"{_BASE_URL}/data/images_stitched.zip",
-    "metadata": f"{_BASE_URL}/data/metadata_stitched.zip",
-    "captions": f"{_BASE_URL}/data/file_to_caption.json",
-}
+_LOCAL_DATA_ROOT = os.getenv("MMNEEDLE_DATA_ROOT")
+if _LOCAL_DATA_ROOT:
+    def _make_local(name: str) -> str:
+        return os.path.join(_LOCAL_DATA_ROOT, name)
+    _URLS = {
+        "images": _make_local("images_stitched.zip"),
+        "metadata": _make_local("metadata_stitched.zip"),
+        "captions": _make_local("file_to_caption.json"),
+    }
+else:
+    _BASE_URL = "https://huggingface.co/datasets/Wang-ML-Lab/MMNeedle/resolve/main"
+    _URLS = {
+        "images": f"{_BASE_URL}/data/images_stitched.zip",
+        "metadata": f"{_BASE_URL}/data/metadata_stitched.zip",
+        "captions": f"{_BASE_URL}/data/file_to_caption.json",
+    }
 
 _SINGLE_PATTERN = re.compile(r"^annotations_(?P<seq>\\d+)_(?P<rows>\\d+)_(?P<cols>\\d+)\\.json$")
 _MULTI_PATTERN = re.compile(r"^(?P<needles>\\d+)_annotations_(?P<seq>\\d+)_(?P<rows>\\d+)_(?P<cols>\\d+)\\.json$")
