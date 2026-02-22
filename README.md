@@ -5,9 +5,16 @@ This repo contains the code and data for our benchmark paper:
 **Multimodal Needle in a Haystack: Benchmarking Long-Context Capability of Multimodal LLMs**<br>
 H. Wang, H. Shi, S. Tan, W. Qin, W. Wang, T. Zhang, A. Nambi, T. Ganu, H. Wang<br>
 *Annual Conference of the North American Chapter of the Association for Computational Linguistics (NAACL), 2025.*<br>
-[[Paper](https://arxiv.org/pdf/2406.11230)] [[MMNeedle Dataset](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)]
+[[Paper](https://arxiv.org/pdf/2406.11230)] · [[MMNeedle on Hugging Face](https://huggingface.co/datasets/Wang-ML-Lab/MMNeedle)] · [[Google Drive mirror](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing)]
 
-To use this benchmark, please download the MMNeedle dataset at this [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing). Alternatively, you could also construct your version of MMNeedle by following the instructions [below](https://github.com/Wang-ML-Lab/multimodal-needle-in-a-haystack/tree/main?tab=readme-ov-file#step-2-constructing-the-dataset-optional). 
+## Download the dataset (two options)
+
+| Source | Notes |
+| --- | --- |
+| **Hugging Face** – [`Wang-ML-Lab/MMNeedle`](https://huggingface.co/datasets/Wang-ML-Lab/MMNeedle) | Ship-ready for `datasets.load_dataset`. Contains `data/images_stitched.zip` (~11.4 GB), `data/metadata_stitched.zip`, `data/file_to_caption.json`, plus the builder + README. |
+| **Google Drive mirror** – [link](https://drive.google.com/drive/folders/1D2XHmj466e7WA4aY7zLkbdTmp3it2ZPy?usp=sharing) | Legacy location with the raw zips if you prefer direct downloads. |
+
+After downloading from either source, you can also construct your own version by following [Step 2](#step-2-constructing-the-dataset-optional).
 
 ## News
 [2025-03-07] MMNeedle is selected for an **Oral Presentation** at NAACL!
